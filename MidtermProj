@@ -1,0 +1,144 @@
+from datetime import datetime  # Importing the datetime module to work with dates
+
+# List to store all expense records
+expenses = []
+
+# Function to validate and input date in YYYY-MM-DD format
+def valid_date():
+    while True:
+        try:
+            # Prompt the user to enter a date
+            date_inp = input("Enter date (YYYY-MM-DD): ")   
+            # Try to convert the input to a date object in the specified format
+            datetime.strptime(date_inp, "%Y-%m-%d")
+            return date_inp  # Return the valid date as a string
+        except ValueError:
+            # If the date format is incorrect, notify the user and prompt again
+            print("Invalid date format. Please enter as YYYY-MM-DD. Let's try it again.")
+    
+# Function to validate and input the amount as a float
+def valid_amount():
+    while True:
+        try:
+            # Prompt the user to enter an amount
+            input_amount = input("Enter amount: ")
+            # Try to convert the input to a float
+            amount = float(input_amount)
+            return amount  # Return the valid amount
+        except ValueError:
+            # If the input is not a number, notify the user and prompt again
+            print("Invalid input. Amount must be a number.")
+
+# Function to add a new expense to the expenses list
+def add_expense():
+    while True:
+        # Get valid amount and date from the user
+        amount = valid_amount()
+        date = valid_date()
+        # Get the category and description for the expense
+        category = input("Enter category (e.g., food, transportation): ")
+        description = input("Enter description: ")
+        
+        # Add the expense to the list of expenses as a dictionary
+        expenses.append({"amount": amount,
+                         "date": date,
+                         "category": category,
+                         "description": description})
+        break  # Break the loop once the expense is added
+
+# Function to remove an expense by index
+def remove_expense():
+    if len(expenses) == 0:
+        # If there are no expenses, notify the user and return
+        print("No expenses, please try again later")
+        return
+    
+    # Display all current expenses
+    display_expenses()
+    
+    while True:
+        try:
+            # Prompt the user to enter the index of the expense to remove
+            Index = int(input("What's the index of the expense you would like to remove? "))
+            # Check if the index is valid (within the bounds of the list)
+            if Index < 1 or Index > len(expenses):
+                print("Invalid index, please try again.")
+            else:
+                # Remove the expense at the specified index
+                expenses.pop(Index - 1)
+                print(f"Expense at index {Index} has been removed.")
+                # Display the updated list of expenses
+                display_expenses()
+                break  # Break the loop once the expense is removed
+        except ValueError:
+            # Handle invalid (non-integer) input for the index
+            print("Invalid input, please input a valid number.")
+
+# Function to display all the expenses
+def display_expenses():
+    if len(expenses) == 0:
+        # If no expenses, notify the user
+        print("No expenses to display")
+    else:
+        # Loop through the list of expenses and display each one
+        expenseIndex = 1
+        for expanse in expenses:
+            print(expenseIndex,")","The Amount: ",expanse["amount"],
+                    "\n The date: ", expanse["date"],
+                    "\n The category: ", expanse["category"],
+                    "\n The description: ", expanse["description"])
+            expenseIndex += 1
+
+# Placeholder function for file reading (not yet implemented)
+def file_reader(file):
+    return None  # Currently does nothing
+
+# Main function to run the expense tracker
+def main():
+    # Prompt the user for how they want to input data
+    print("How would you like to input your data today?")
+    print("1. Import file")
+    print("2. Input the data yourself")
+    
+    while True:
+        choice = input("Choose an option: ")
+        if choice == "1":
+            # Placeholder for file import functionality
+            print("File import feature not yet implemented.")
+            break
+        elif choice == "2":
+            # If user chooses to input data manually, call add_expense
+            add_expense()
+            break
+        else:
+            # If input is invalid, prompt again
+            print("Invalid choice, please try again.")
+    
+    # Main loop to handle actions after data entry
+    while True:
+        print("What would you like to do next?")
+        print("1. Remove an expense")
+        print("2. Display all expenses")
+        print("3. Add a new expense")
+        print("4. Stop")
+
+        decision = input("Choose an option: ")
+        if decision == "1":
+            # If user chooses to remove an expense, call remove_expense
+            remove_expense()
+        elif decision == "2":
+            # If user chooses to display expenses, call display_expenses
+            display_expenses()
+        elif decision == "3":
+            # If user chooses to add another expense, call add_expense
+            add_expense()
+        elif decision == "4":
+            # If user chooses to stop, exit the loop and end the program
+            print("Thank you for using this app, see you again next time!")
+            break
+        else:
+            # Handle invalid choice and prompt again
+            print("Invalid choice, please try again.")
+
+# Run the main function to start the program
+main()
